@@ -5,7 +5,6 @@ from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 import sklearn.metrics as skm
 import numpy as np
-import ConfusionMat
 import pandas as pd
 def val_epoch(model, val_dataloader, device = "cuda"):
     model.eval()
@@ -81,3 +80,44 @@ def val_epoch_m(model, val_dataloader, device="cuda"):
     # viz.image(ar.transpose(2,0,1), win="CM",opts={"title":"Confusionmat"})
 
     return loss_meter / it_count, acc_meter / it_count, confusionMatrix
+
+def val_epoch_fit(model, optimizer, val_dataloader,device="cuda"):
+    model.eval()
+    acc_meter, loss_meter, it_count = 0, 0, 0
+    with torch.no_grad():
+        for inputs, target in val_dataloader:
+            inputs = inputs.to(torch.float32)
+            target = target.to(torch.float32)
+            inputs = inputs.to(device)
+            target = target.to(device)
+            optimizer.zero_grad()
+            output = model(inputs)
+            loss_fn = loss_fn = nn.MSELoss()
+            loss = loss_fn(output.squeeze(1), target)
+            loss_meter += loss.item()
+            it_count += 1
+            # print(skm.confusion_matrix(target.cpu(), output.argmax(dim=1).cpu()))
+            # print(ar.shape)
+            #viz.image(ar.transpose(2,0,1), win="CM",opts={"title":"Confusionmat"})
+        #print(f'times {i} - lr {lr} -  loss: {loss_meter / it_count}')
+    return loss_meter / it_count
+
+def val_epoch_fit_test(model, val_dataloader,device="cuda"):
+    model.eval()
+    acc_meter, loss_meter, it_count = 0, 0, 0
+    with torch.no_grad():
+        for inputs, target in val_dataloader:
+            inputs = inputs.to(torch.float32)
+            target = target.to(torch.float32)
+            inputs = inputs.to(device)
+            target = target.to(device)
+            output = model(inputs)
+            loss_fn = loss_fn = nn.MSELoss()
+            loss = loss_fn(output.squeeze(1), target)
+            loss_meter += loss.item()
+            it_count += 1
+            # print(skm.confusion_matrix(target.cpu(), output.argmax(dim=1).cpu()))
+            # print(ar.shape)
+            #viz.image(ar.transpose(2,0,1), win="CM",opts={"title":"Confusionmat"})
+        #print(f'times {i} - lr {lr} -  loss: {loss_meter / it_count}')
+    return loss_meter / it_count

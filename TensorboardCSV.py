@@ -86,7 +86,7 @@ def listdir(path, list_name, list_name2, type = '.jpg'):  # , list_name2):
 
 
 if __name__ == '__main__':
-    tasklist = ["ES", "QV", "ESG7", "QVG7", "QV1216"]
+    tasklist = ["qua","quatqdq"]
     for k in range(len(tasklist)):
         namelist = []
         namelist2 = []

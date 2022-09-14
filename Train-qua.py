@@ -28,11 +28,12 @@ def save_ckpt(state, is_best, model_save_dir):
 
 if __name__ == '__main__':
     # 加载数据
-    namelist = ["ws1"]
+    namelist = ["qua","quatqda"]
+    task = 1
     classlist = [60,60,7,7,60,24]
     # tasknum = 0
     # task = {"name":namelist[tasknum], "class":classlist[tasknum]}
-    datapath = f"./data/Custom/{namelist[0]}.pth"
+    datapath = f"./data/Custom/{namelist[task]}.pth"
     print(datapath)
 
     ## 训练数据
@@ -44,11 +45,11 @@ if __name__ == '__main__':
 
     # 加载模型
     print("train data size:", len(train_dataset), ",val data size:", len(val_dataset))
-    model = CNN1Dnet.Model_Fit_ss()
+    model = CNN1Dnet.Model_Fit(4)
     model = model.to(device)
     print(model)
     # exit()
-    model_save_dir = f'./log/{namelist[0]}/CNN1D-{time.strftime("%Y%m%d%H%M")}'
+    model_save_dir = f'./log/{namelist[task]}/{namelist[task]}-{time.strftime("%Y%m%d%H%M")}'
     if not os.path.exists(model_save_dir): os.makedirs(model_save_dir)
     # 加载超参数
     best_lost = -1

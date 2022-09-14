@@ -23,15 +23,22 @@ def get_filelist(dir, Filelist, semidir):
     return Filelist
 
 if __name__ == '__main__':
-    data = scio.loadmat("./Data/ws1.mat")
-    X = data['X']
-    Y = data['X']
-    print(X, Y, Y.shape,X.shape)
-    X_train, X_test, y_train, y_test = train_test_split(X.astype('float32'), Y.astype('int64'), test_size=0.4, random_state=666)
-    print(y_train.shape, y_test.shape)
+    TaskName = ["Yaw", "Pitch", "Roll", "Hybrid"]
+    task = 2
+    Topic = "qua"
+    Train_percentage = 0.6
+    data = scio.loadmat(f"./Data/ws{TaskName[task]}.mat")
 
+    X = data['X']
+    Y = data['Y'][:, 0:4]
+
+    X_train, X_test, y_train, y_test = train_test_split(X.astype('float32'), Y.astype('int64'), test_size=1-Train_percentage, random_state=666)
+
+    print(Y.shape,X.shape)
+    print(y_train.shape, y_test.shape)
     dd = {'train': X_train,
           'val': X_test,
           'label_train': y_train,
           'label_val': y_test}
-    torch.save(dd, '../data/Custom/ws1.pth')
+
+    torch.save(dd, f'../data/Custom/{TaskName[task]}-{Topic}.pth')

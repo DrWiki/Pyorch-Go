@@ -1,73 +1,79 @@
 import torch
 import torch.nn as nn
-class Conv1DNet(nn.Module):
-    def __init__(self, num_classes):
-        super(Conv1DNet, self).__init__()
-        self.conv1 = nn.Conv1d(1, 32, kernel_size=15, stride=2, padding=7, bias=False)
-        self.bn1 = nn.BatchNorm1d(32)
-        self.relu1 = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool1d(kernel_size=3, stride=2, padding=1)
-        # self.dp1 = nn.Dropout(p=0.2)
-        self.conv2 = nn.Conv1d(32, 64, kernel_size=15, stride=2, padding=7, bias=False)
-        self.bn2 = nn.BatchNorm1d(64)
-        self.relu2 = nn.ReLU(inplace=True)
-        self.maxpool2 = nn.MaxPool1d(kernel_size=3, stride=2, padding=1)
-        # self.dp2 = nn.Dropout(p=0.2)
-        self.conv3 = nn.Conv1d(64, 128, kernel_size=15, stride=2, padding=7, bias=False)
-        self.bn3 = nn.BatchNorm1d(128)
-        self.relu3 = nn.ReLU(inplace=True)
-        self.maxpool3 = nn.MaxPool1d(kernel_size=3, stride=2, padding=1)
-        # self.dp3 = nn.Dropout(p=0.1)
-        self.avgpool = nn.AdaptiveAvgPool1d(1)
-        self.fc = nn.Linear(128, num_classes)
+
+class Model_Fit(nn.Module):
+    def __init__(self,N = 16):
+        super(Model_Fit, self).__init__()
+        self.fc1 = nn.Linear(16, 500)
+        self.R1 = nn.ReLU()
+        self.fc2 = nn.Linear(500, 1000)
+        self.R2 = nn.ReLU()
+        self.fc3 = nn.Linear(1000, N)
 
     def forward(self, x):
-        x = self.relu1(self.bn1(self.conv1(x)))
-        x = self.maxpool1(x)
-        x = self.relu2(self.bn2(self.conv2(x)))
-        x = self.maxpool2(x)
-        x = self.relu3(self.bn3(self.conv3(x)))
-        x = self.maxpool3(x)
-
-        x = self.avgpool(x)
-        x = x.view(x.size(0), -1)
-        x = self.fc(x)
+        x = self.fc1(x)
+        x = self.R1(x)
+        x = self.fc2(x)
+        x = self.R2(x)
+        x = self.fc3(x)
         return x
+    def name(self):
+        return self.__class__.__name__
 
 
-class Conv1DNetMAX(nn.Module):
-    def __init__(self, num_classes):
-        super(Conv1DNetMAX, self).__init__()
-        self.conv1 = nn.Conv1d(1, 256, kernel_size=15, stride=2, padding=7, bias=False)
-        self.bn1 = nn.BatchNorm1d(256)
-        self.relu1 = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool1d(kernel_size=3, stride=2, padding=1)
-
-        # self.dp1 = nn.Dropout(p=0.2)
-        self.conv2 = nn.Conv1d(256, 512, kernel_size=15, stride=2, padding=7, bias=False)
-        self.bn2 = nn.BatchNorm1d(512)
-        self.relu2 = nn.ReLU(inplace=True)
-        self.maxpool2 = nn.MaxPool1d(kernel_size=3, stride=2, padding=1)
-
-        # self.dp2 = nn.Dropout(p=0.2)
-        self.conv3 = nn.Conv1d(512, 1024, kernel_size=15, stride=2, padding=7, bias=False)
-        self.bn3 = nn.BatchNorm1d(1024)
-        self.relu3 = nn.ReLU(inplace=True)
-        self.maxpool3 = nn.MaxPool1d(kernel_size=3, stride=2, padding=1)
-
-        # self.dp3 = nn.Dropout(p=0.1)
-        self.avgpool = nn.AdaptiveAvgPool1d(1)
-        self.fc = nn.Linear(1024, num_classes)
+class Model_Fit_s(nn.Module):
+    def __init__(self,N=16):
+        super(Model_Fit_s, self).__init__()
+        self.fc1 = nn.Linear(16, 30)
+        self.R1 = nn.ReLU()
+        self.fc2 = nn.Linear(30, 100)
+        self.R2 = nn.ReLU()
+        self.fc3 = nn.Linear(100, N)
 
     def forward(self, x):
-        x = self.relu1(self.bn1(self.conv1(x)))
-        x = self.maxpool1(x)
-        x = self.relu2(self.bn2(self.conv2(x)))
-        x = self.maxpool2(x)
-        x = self.relu3(self.bn3(self.conv3(x)))
-        x = self.maxpool3(x)
-
-        x = self.avgpool(x)
-        x = x.view(x.size(0), -1)
-        x = self.fc(x)
+        x = self.fc1(x)
+        x = self.R1(x)
+        x = self.fc2(x)
+        x = self.R2(x)
+        x = self.fc3(x)
         return x
+    def name(self):
+        return self.__class__.__name__
+
+class Model_Fit_ss(nn.Module):
+    def __init__(self, N):
+        super(Model_Fit_ss, self).__init__()
+        self.fc1 = nn.Linear(16, 16)
+        self.R1 = nn.ReLU()
+        self.fc2 = nn.Linear(16, 16)
+        self.R2 = nn.ReLU()
+        self.fc3 = nn.Linear(16, N)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.R1(x)
+        x = self.fc2(x)
+        x = self.R2(x)
+        x = self.fc3(x)
+        return x
+    def name(self):
+        return self.__class__.__name__
+
+class Model_Fit_sss(nn.Module):
+    def __init__(self, N):
+        super(Model_Fit_sss, self).__init__()
+        self.fc1 = nn.Linear(16, 8)
+        self.R1 = nn.ReLU()
+        self.fc2 = nn.Linear(8, 8)
+        self.R2 = nn.ReLU()
+        self.fc3 = nn.Linear(8, N)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.R1(x)
+        x = self.fc2(x)
+        x = self.R2(x)
+        x = self.fc3(x)
+        return x
+    def name(self):
+        return self.__class__.__name__
